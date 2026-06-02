@@ -9,6 +9,10 @@ from arabic_ai_toolkit.stemmer.light_stemmer import stem_words
 from arabic_ai_toolkit.sentiment.sentiment_analyzer import analyze_sentiment
 from arabic_ai_toolkit.summarization.extractive_summarizer import summarize
 from arabic_ai_toolkit.correction.auto_correct import correct_common_errors
+from arabic_ai_toolkit.ner.entity_extractor import extract_entities
+from arabic_ai_toolkit.normalizer.number_normalizer import normalize_numbers
+from arabic_ai_toolkit.cleaner.profanity_filter import censor_text, has_profanity
+from arabic_ai_toolkit.augmentation.synonym_replacer import augment_text
 
 def process_text(text: str, operations: list[str]) -> str:
     if not text.strip():
@@ -43,7 +47,7 @@ def process_text(text: str, operations: list[str]) -> str:
         
     if "Summarize" in operations:
         summary = summarize(current_text, num_sentences=2)
-        results.append(f"📄 التلخيص:\n" + "\n".join(summary))
+        results.append("📄 التلخيص:\n" + "\n".join(summary))
         
     if "Tokenize" in operations:
         words = split_words(current_text)
@@ -58,6 +62,31 @@ def process_text(text: str, operations: list[str]) -> str:
         words = split_words(current_text)
         stemmed = stem_words(words)
         results.append(f"🌱 التجذير:\n{stemmed[:15]}...")
+    if "Profanity Filter" in operations:
+        if has_profanity(current_text):
+            current_text = censor_text(current_text)
+            results.append(f"🤬 فلتر الشتائم: تم اكتشاف كلمات نابية وحذفها!\n{current_text}")
+        else:
+            results.append("✅ فلتر الشتائم: النص نظيف وآمن.")
+            
+    if "Number Normalizer" in operations:
+        current_text = normalize_numbers(current_text)
+        results.append(f"🔢 توحيد الأرقام:\n{current_text}")
+        
+    if "NER" in operations:
+        entities = extract_entities(current_text)
+        res_str = f"📍 مواقع: {entities['locations']}\n"
+        res_str += f"🏢 منظمات: {entities['organizations']}\n"
+        res_str += f"📅 تواريخ: {entities['dates']}"
+        results.append(f"🔍 استخراج الكيانات (NER):\n{res_str}")
+        
+    if "Data Augmentation" in operations:
+        variations = augment_text(current_text, n_variations=3)
+        if variations:
+            res_str = "\n".join([f"- {v}" for v in variations])
+            results.append(f"🧬 توليد نصوص جديدة (Augmentation):\n{res_str}")
+        else:
+            results.append("🧬 توليد نصوص جديدة: لم نتمكن من توليد اختلافات كافية.")
 
     if not operations:
         return "يرجى اختيار عملية واحدة على الأقل من القائمة."
@@ -77,9 +106,9 @@ with gr.Blocks(title="Arabic AI Toolkit") as demo:
                 placeholder="اكتب نصاً أو الصق مقالاً طويلاً هنا لتجربة الأداة..."
             )
             operations = gr.CheckboxGroup(
-                ["Auto-Correction", "Clean", "Normalize", "Language/Dialect", "Sentiment", "Summarize", "Tokenize", "Keywords", "Stem"],
+                ["Auto-Correction", "Profanity Filter", "Clean", "Number Normalizer", "Normalize", "Language/Dialect", "Sentiment", "NER", "Summarize", "Tokenize", "Keywords", "Stem", "Data Augmentation"],
                 label="اختر العمليات التي تريد تنفيذها",
-                value=["Auto-Correction", "Clean", "Normalize", "Language/Dialect", "Sentiment", "Keywords"]
+                value=["Auto-Correction", "Clean", "Normalize", "Language/Dialect", "Sentiment", "NER", "Keywords"]
             )
             submit_btn = gr.Button("معالجة النص ✨", variant="primary")
             

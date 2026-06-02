@@ -11,6 +11,10 @@ from arabic_ai_toolkit.stemmer.light_stemmer import stem_words
 from arabic_ai_toolkit.sentiment.sentiment_analyzer import analyze_sentiment
 from arabic_ai_toolkit.summarization.extractive_summarizer import summarize
 from arabic_ai_toolkit.correction.auto_correct import correct_common_errors
+from arabic_ai_toolkit.ner.entity_extractor import extract_entities
+from arabic_ai_toolkit.normalizer.number_normalizer import normalize_numbers
+from arabic_ai_toolkit.cleaner.profanity_filter import censor_text
+from arabic_ai_toolkit.augmentation.synonym_replacer import augment_text
 
 from typing import Any
 
@@ -18,7 +22,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Arabic AI Toolkit CLI")
     parser.add_argument("text", type=str, help="The Arabic text to process")
     parser.add_argument("--action", type=str, required=True, 
-                        choices=['clean', 'normalize', 'tokenize', 'sentiment', 'dialect', 'summarize', 'stem', 'keywords', 'correct', 'lang'],
+                        choices=['clean', 'normalize', 'tokenize', 'sentiment', 'dialect', 'summarize', 'stem', 'keywords', 'correct', 'lang', 'ner', 'norm_numbers', 'censor', 'augment'],
                         help="The operation to perform on the text")
     
     args = parser.parse_args()
@@ -47,6 +51,14 @@ def main() -> None:
         result = correct_common_errors(text)
     elif action == 'lang':
         result = detect_language(text)
+    elif action == 'ner':
+        result = extract_entities(text)
+    elif action == 'norm_numbers':
+        result = normalize_numbers(text)
+    elif action == 'censor':
+        result = censor_text(text)
+    elif action == 'augment':
+        result = augment_text(text)
         
     if isinstance(result, (dict, list)):
         print(json.dumps(result, ensure_ascii=False, indent=2))
