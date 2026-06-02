@@ -23,60 +23,98 @@ def print_box(title: str, content: str | list | dict) -> None:
         print(f"  {content}")
     print("="*60)
 
+def display_menu() -> None:
+    print("\nاختر العملية التي تريد تنفيذها:")
+    print("1. تنفيذ جميع العمليات")
+    print("2. التنظيف (Cleaning)")
+    print("3. التوحيد (Normalization)")
+    print("4. التقسيم (Tokenization)")
+    print("5. استخراج الكلمات المفتاحية (Keywords)")
+    print("6. كشف اللغة واللهجة (Language & Dialect)")
+    print("7. التجذير الخفيف (Stemming)")
+    print("8. تحليل المشاعر (Sentiment Analysis)")
+    print("9. التلخيص (Summarization)")
+    print("10. التصحيح التلقائي (Auto Correction)")
+    print("0. خروج")
+
 def main() -> None:
     print("\n" + "*"*60)
     print(" "*10 + "مرحباً بك في أداة Arabic AI Toolkit التفاعلية!")
-    print(" "*10 + "النسخة المتقدمة (Advanced Features)")
-    print(" "*10 + "اكتب 'خروج' لإنهاء البرنامج في أي وقت.")
     print("*"*60 + "\n")
     
     while True:
+        display_menu()
+        try:
+            choice = input("\nرقم العملية: ")
+        except EOFError:
+            break
+            
+        if choice == '0' or choice.strip() == 'خروج':
+            print("\nإلى اللقاء! 👋\n")
+            break
+            
+        if choice not in [str(i) for i in range(1, 11)]:
+            print("الرجاء اختيار رقم صحيح.")
+            continue
+            
         try:
             text = input("\nأدخل النص الذي تريد معالجته هنا:\n📝 > ")
         except EOFError:
             break
             
-        if text.strip() == 'خروج':
-            print("\nإلى اللقاء! 👋\n")
-            break
         if not text.strip():
             continue
             
-        # 1. Auto-Correction
-        corrected = correct_common_errors(text)
-        print_box("التصحيح التلقائي (Auto-Correction)", corrected)
-        
-        # 2. Cleaning & Normalization
-        cleaned = clean(corrected, emojis=True, punctuation=False)
-        normalized = normalize(cleaned, ta_marbuta_to_ha=False, hamza=True)
-        print_box("التنظيف والتوحيد (Cleaning & Normalization)", normalized)
-        
-        # 3. Dialect & Language Detection
-        lang = detect_language(text)
-        if lang == "Arabic":
-            dialect = detect_dialect(text)
-            print_box("اكتشاف اللغة واللهجة", f"Language: {lang} | Dialect: {dialect}")
-        else:
-            print_box("اكتشاف اللغة", lang)
-        
-        # 4. Sentiment Analysis
-        sentiment = analyze_sentiment(normalized)
-        print_box("تحليل المشاعر (Sentiment Analysis)", f"Label: {sentiment['label']} | Score: {sentiment['score']}")
-        
-        # 5. Summarization
-        sentences = split_sentences(normalized)
-        if len(sentences) > 2:
-            summary = summarize(normalized, num_sentences=2)
-            print_box("التلخيص الاستخراجي (Extractive Summarization)", summary)
-        
-        # 6. Stemming & Keywords
-        words = split_words(normalized)
-        stemmed = stem_words(words)
-        print_box("المجذّر (Lightweight Stemming - First 10 words)", stemmed[:10])
-        
-        keywords = extract_keywords(normalized, top_n=5)
-        kw_str = " | ".join([f"'{k}' ({v})" for k, v in keywords])
-        print_box("أهم الكلمات المفتاحية (Keywords)", kw_str if kw_str else "لا توجد كلمات")
+        if choice == '1' or choice == '10':
+            text = correct_common_errors(text)
+            if choice == '10': print_box("التصحيح التلقائي", text)
+            
+        if choice == '1' or choice == '2':
+            cleaned = clean(text, emojis=True, punctuation=False)
+            if choice == '2': print_box("التنظيف", cleaned)
+            else: text = cleaned
+            
+        if choice == '1' or choice == '3':
+            normalized = normalize(text, ta_marbuta_to_ha=False, hamza=True)
+            if choice == '3': print_box("التوحيد", normalized)
+            else: text = normalized
+            
+        if choice == '1' or choice == '4':
+            sentences = split_sentences(text)
+            words = split_words(text)
+            if choice == '4': 
+                print_box("الجمل", sentences)
+                print_box("الكلمات", words)
+                
+        if choice == '1' or choice == '5':
+            keywords = extract_keywords(text, top_n=5)
+            kw_str = " | ".join([f"'{k}' ({v})" for k, v in keywords])
+            if choice == '5' or choice == '1': print_box("الكلمات المفتاحية", kw_str if kw_str else "لا توجد")
+            
+        if choice == '1' or choice == '6':
+            lang = detect_language(text)
+            if lang == "Arabic":
+                dialect = detect_dialect(text)
+                print_box("اكتشاف اللغة واللهجة", f"Language: {lang} | Dialect: {dialect}")
+            else:
+                print_box("اكتشاف اللغة", lang)
+                
+        if choice == '1' or choice == '7':
+            words = split_words(text)
+            stemmed = stem_words(words)
+            print_box("المجذّر", stemmed[:10])
+            
+        if choice == '1' or choice == '8':
+            sentiment = analyze_sentiment(text)
+            print_box("تحليل المشاعر", f"Label: {sentiment['label']} | Score: {sentiment['score']}")
+            
+        if choice == '1' or choice == '9':
+            sentences = split_sentences(text)
+            if len(sentences) > 1:
+                summary = summarize(text, num_sentences=2)
+                print_box("التلخيص", summary)
+            elif choice == '9':
+                print_box("التلخيص", "النص قصير جداً للتلخيص.")
 
 if __name__ == "__main__":
     main()
