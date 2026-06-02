@@ -16,13 +16,15 @@ _ORGANIZATION_KEYWORDS = {"شركة", "مؤسسة", "وزارة", "جامعة", 
 
 def extract_entities(text: str) -> dict[str, list[str]]:
     """
-    Extracts locations (countries, cities), dates, and organizations using rules.
+    Extracts common entities from Arabic text.
+    Returns a dict with 'locations', 'organizations', 'dates', and 'money'.
     """
     words = text.split()
     entities: dict[str, list[str]] = {
         "locations": [],
         "organizations": [],
-        "dates": []
+        "dates": [],
+        "money": []
     }
     
     # 1. Locations
@@ -52,10 +54,16 @@ def extract_entities(text: str) -> dict[str, list[str]]:
     
     entities["dates"].extend(numeric_dates)
     entities["dates"].extend(text_dates)
+
+    # 4. Money/Currency
+    currency_pattern = r'\b\d+(?:[.,]\d+)?\s*(?:دولار|يورو|جنيه|ريال|درهم|دينار|ليرة|فرنك|ين|روبل|₪|\$|€|£)\b'
+    money = re.findall(currency_pattern, text)
+    entities["money"].extend(money)
     
     # Deduplicate
     entities["locations"] = list(set(entities["locations"]))
     entities["organizations"] = list(set(entities["organizations"]))
     entities["dates"] = list(set(entities["dates"]))
+    entities["money"] = list(set(entities["money"]))
     
     return entities

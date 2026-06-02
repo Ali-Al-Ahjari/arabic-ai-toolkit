@@ -24,3 +24,9 @@ def test_extract_eastern_and_hijri_dates():
     entities = extract_entities(text)
     assert "15 أيلول 2023" in entities["dates"]
     assert "1 رمضان 1445" in entities["dates"]
+
+def test_extract_money():
+    text = "تكلفة المشروع 1500 دولار وسعره 45.50 ريال"
+    entities = extract_entities(text)
+    assert "1500 دولار" in entities["money"]
+    assert "45.50 ريال" in entities["money"]

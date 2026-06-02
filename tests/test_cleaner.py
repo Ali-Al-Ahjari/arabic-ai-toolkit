@@ -4,6 +4,7 @@ from arabic_ai_toolkit.cleaner.cleaner import (
     remove_urls,
     remove_punctuation,
     remove_emojis,
+    remove_html_tags,
     normalize_spaces,
     clean
 )
@@ -17,11 +18,14 @@ def test_remove_tatweel() -> None:
 def test_remove_urls() -> None:
     assert remove_urls("زوروا https://example.com") == "زوروا "
 
+def test_remove_html_tags():
+    assert remove_html_tags("<p>مرحبا</p> <br>بك") == " مرحبا   بك"
+
 def test_remove_punctuation() -> None:
     assert remove_punctuation("مرحبا!!! 😊، كيف حالك؟") == "مرحبا 😊 كيف حالك"
 
-def test_remove_emojis() -> None:
-    assert remove_emojis("مرحبا!!! 😊") == "مرحبا!!! "
+def test_remove_emojis():
+    assert remove_emojis("مرحبا بك 😊") == "مرحبا بك "
 
 def test_normalize_spaces() -> None:
     assert normalize_spaces("أهلا     بكم") == "أهلا بكم"

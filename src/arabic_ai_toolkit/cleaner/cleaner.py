@@ -10,6 +10,8 @@ _URLS = re.compile(r'https?://\S+|www\.\S+')
 _PUNCTUATION = re.compile(r'[!\"#\$%&\'\(\)\*\+,\-\./:;<=>\?@\[\\\]\^_`\{\|\}~،؛؟«»]')
 # Emojis (Simple unicode range approach, can be expanded)
 _EMOJIS = re.compile(r'[\U00010000-\U0010ffff]', flags=re.UNICODE)
+# HTML Tags
+_HTML_TAGS = re.compile(r'<[^>]+>')
 
 def remove_diacritics(text: str) -> str:
     """Removes Arabic diacritics (Tashkeel) from text."""
@@ -31,6 +33,10 @@ def remove_emojis(text: str) -> str:
     """Removes emojis from text."""
     return _EMOJIS.sub('', text)
 
+def remove_html_tags(text: str) -> str:
+    """Removes HTML tags from text."""
+    return _HTML_TAGS.sub(' ', text)
+
 def normalize_spaces(text: str) -> str:
     """Removes extra spaces from text."""
     return re.sub(r'\s+', ' ', text).strip()
@@ -39,15 +45,18 @@ def clean(text: str,
           diacritics: bool = True, 
           tatweel: bool = True, 
           urls: bool = True, 
+          html_tags: bool = True,
           punctuation: bool = False, 
           emojis: bool = False,
           spaces: bool = True) -> str:
     """
     Cleans the Arabic text based on the provided flags.
-    By default, removes diacritics, tatweel, urls, and normalizes spaces.
+    By default, removes diacritics, tatweel, urls, html_tags, and normalizes spaces.
     """
     if urls:
         text = remove_urls(text)
+    if html_tags:
+        text = remove_html_tags(text)
     if emojis:
         text = remove_emojis(text)
     if punctuation:

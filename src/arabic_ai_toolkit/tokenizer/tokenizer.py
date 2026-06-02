@@ -16,9 +16,9 @@ def split_words(text: str) -> list[str]:
 
 def split_sentences(text: str) -> list[str]:
     """
-    Splits text into sentences based on common Arabic and English sentence delimiters.
-    Delimiters: '.', '!', '?', '؟'
+    Splits text into sentences based on common Arabic and English sentence delimiters and newlines.
+    Delimiters: '.', '!', '?', '؟', '\n'
     """
-    # Split using a regex that looks behind for sentence terminators
-    sentences = re.split(r'(?<=[.!?؟])\s+', text)
+    # Split using a regex that splits on newlines or looks behind for sentence terminators
+    sentences = re.split(r'\n+|<\s*br\s*/?>|(?<=[.!?؟])\s+', text)
     return [s.strip() for s in sentences if s.strip()]
