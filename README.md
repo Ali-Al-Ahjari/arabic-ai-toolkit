@@ -102,6 +102,20 @@ arabic-ai-toolkit --action ner "دفع 50 ريال في الرياض"
 # {'locations': ['الرياض'], 'organizations': [], 'dates': [], 'money': ['50 ريال']}
 ```
 
+## 🎨 Studio Web UI (Graphical Interface)
+The toolkit comes with an elegant **Gradio-based Web UI** to test all 14 features interactively without writing a single line of code!
+
+1. **Install UI dependencies**:
+```bash
+pip install arabic-ai-toolkit[ui]
+```
+
+2. **Run the Studio**:
+```bash
+python examples/web_ui.py
+```
+3. Open your browser at `http://127.0.0.1:7860` to access the interactive dashboard!
+
 ## 🤝 Contributing
 Contributions are welcome! Please ensure you pass `pytest`, `mypy`, and `ruff` before submitting a PR.
 
