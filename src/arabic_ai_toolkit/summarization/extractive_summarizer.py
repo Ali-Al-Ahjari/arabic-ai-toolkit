@@ -19,14 +19,15 @@ def summarize(text: str, num_sentences: int = 2) -> list[str]:
         return sentences[:num_sentences]
         
     max_freq = max(word_freq.values())
+    normalized_freq: dict[str, float] = {}
     for word in word_freq:
-        word_freq[word] = word_freq[word] / max_freq # Normalize
+        normalized_freq[word] = word_freq[word] / max_freq # Normalize
         
     # Score sentences
     sentence_scores = []
     for i, sentence in enumerate(sentences):
         words = split_words(sentence)
-        score = sum(word_freq.get(w, 0) for w in words)
+        score = sum(normalized_freq.get(w, 0.0) for w in words)
         sentence_scores.append((score, i, sentence))
         
     # Sort by score (descending)

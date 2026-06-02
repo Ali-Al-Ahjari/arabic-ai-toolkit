@@ -67,17 +67,22 @@ def main() -> None:
             
         if choice == '1' or choice == '10':
             text = correct_common_errors(text)
-            if choice == '10': print_box("التصحيح التلقائي", text)
+            if choice == '10': 
+                print_box("التصحيح التلقائي", text)
             
         if choice == '1' or choice == '2':
             cleaned = clean(text, emojis=True, punctuation=False)
-            if choice == '2': print_box("التنظيف", cleaned)
-            else: text = cleaned
+            if choice == '2': 
+                print_box("التنظيف", cleaned)
+            else: 
+                text = cleaned
             
         if choice == '1' or choice == '3':
             normalized = normalize(text, ta_marbuta_to_ha=False, hamza=True)
-            if choice == '3': print_box("التوحيد", normalized)
-            else: text = normalized
+            if choice == '3': 
+                print_box("التوحيد", normalized)
+            else: 
+                text = normalized
             
         if choice == '1' or choice == '4':
             sentences = split_sentences(text)
@@ -89,7 +94,8 @@ def main() -> None:
         if choice == '1' or choice == '5':
             keywords = extract_keywords(text, top_n=5)
             kw_str = " | ".join([f"'{k}' ({v})" for k, v in keywords])
-            if choice == '5' or choice == '1': print_box("الكلمات المفتاحية", kw_str if kw_str else "لا توجد")
+            if choice == '5' or choice == '1': 
+                print_box("الكلمات المفتاحية", kw_str if kw_str else "لا توجد")
             
         if choice == '1' or choice == '6':
             lang = detect_language(text)

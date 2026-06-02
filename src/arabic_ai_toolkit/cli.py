@@ -12,6 +12,8 @@ from arabic_ai_toolkit.sentiment.sentiment_analyzer import analyze_sentiment
 from arabic_ai_toolkit.summarization.extractive_summarizer import summarize
 from arabic_ai_toolkit.correction.auto_correct import correct_common_errors
 
+from typing import Any
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Arabic AI Toolkit CLI")
     parser.add_argument("text", type=str, help="The Arabic text to process")
@@ -23,7 +25,7 @@ def main() -> None:
     text = args.text
     action = args.action
     
-    result = None
+    result: Any = None
     
     if action == 'clean':
         result = clean(text)

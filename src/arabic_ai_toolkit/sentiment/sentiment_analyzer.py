@@ -1,3 +1,4 @@
+from typing import Any
 from arabic_ai_toolkit.tokenizer.tokenizer import split_words
 from arabic_ai_toolkit.normalizer.normalizer import normalize
 
@@ -5,7 +6,7 @@ from arabic_ai_toolkit.normalizer.normalizer import normalize
 _POSITIVE = {"ممتاز", "رائع", "جيد", "جميل", "عظيم", "مذهل", "احب", "سعيد", "رائعة", "ابداع", "ممتع"}
 _NEGATIVE = {"سيء", "حزين", "قبيح", "رديء", "اكره", "مزعج", "فاشل", "ممل", "غبي", "ضعيف"}
 
-def analyze_sentiment(text: str) -> dict:
+def analyze_sentiment(text: str) -> dict[str, Any]:
     """
     Returns sentiment scores based on word counts.
     """
