@@ -8,6 +8,9 @@ requires-python = ">=3.11"
 license = { text = "MIT" }
 dependencies = []
 
+[project.scripts]
+arabic-ai-toolkit = "arabic_ai_toolkit.cli:main"
+
 [project.optional-dependencies]
 dev = [
     "pytest>=8.0.0",
