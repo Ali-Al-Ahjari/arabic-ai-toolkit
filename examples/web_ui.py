@@ -65,7 +65,7 @@ def process_text(text: str, operations: list[str]) -> str:
     return "\n\n".join(results)
 
 # Create a beautiful and clean UI with Soft theme
-with gr.Blocks(title="Arabic AI Toolkit", theme=gr.themes.Soft(primary_hue="blue")) as demo:
+with gr.Blocks(title="Arabic AI Toolkit") as demo:
     gr.Markdown("# 🚀 Arabic AI Toolkit - Studio")
     gr.Markdown("واجهة رسومية أنيقة وبسيطة لتجربة أدوات معالجة اللغة العربية.")
     
@@ -89,4 +89,4 @@ with gr.Blocks(title="Arabic AI Toolkit", theme=gr.themes.Soft(primary_hue="blue
     submit_btn.click(fn=process_text, inputs=[text_input, operations], outputs=output_display)
 
 if __name__ == "__main__":
-    demo.launch(server_port=7860, show_api=False)
+    demo.launch(server_port=7860, theme=gr.themes.Soft(primary_hue="blue"))
