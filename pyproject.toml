@@ -1,0 +1,28 @@
+[project]
+name = "arabic-ai-toolkit"
+version = "0.1.0"
+description = "The Arabic preprocessing toolkit for AI builders."
+authors = [{ name = "Arabic AI Community", email = "community@example.com" }]
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "ruff>=0.3.0",
+    "mypy>=1.9.0",
+    "pre-commit>=3.7.0"
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+
+[tool.mypy]
+strict = true
