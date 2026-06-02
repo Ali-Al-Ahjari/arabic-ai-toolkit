@@ -47,8 +47,13 @@ def extract_entities(text: str) -> dict[str, list[str]]:
     # 3. Dates
     # Match dd-mm-yyyy or yyyy-mm-dd
     numeric_dates = re.findall(r'\b\d{1,4}[-/]\d{1,2}[-/]\d{1,4}\b', text)
-    # Match text dates e.g., 12 أكتوبر 2023
-    text_dates = re.findall(r'\b\d{1,2}\s+(?:يناير|فبراير|مارس|أبريل|ابريل|مايو|يونيو|يوليو|أغسطس|اغسطس|سبتمبر|أكتوبر|اكتوبر|نوفمبر|ديسمبر)\s+\d{4}\b', text)
+    # Match text dates e.g., 12 أكتوبر 2023, 15 شعبان 1445, 1 كانون الأول 2020
+    months = (
+        r"يناير|فبراير|مارس|أبريل|ابريل|مايو|يونيو|يوليو|أغسطس|اغسطس|سبتمبر|أكتوبر|اكتوبر|نوفمبر|ديسمبر|"
+        r"كانون\s+الثاني|شباط|آذار|نيسان|أيار|حزيران|تموز|آب|أيلول|تشرين\s+الأول|تشرين\s+الثاني|كانون\s+الأول|"
+        r"محرم|صفر|ربيع\s+الأول|ربيع\s+الآخر|جمادى\s+الأولى|جمادى\s+الآخرة|رجب|شعبان|رمضان|شوال|ذو\s+القعدة|ذو\s+الحجة"
+    )
+    text_dates = re.findall(rf'\b\d{{1,2}}\s+(?:{months})\s+\d{{4}}\b', text)
     
     entities["dates"].extend(numeric_dates)
     entities["dates"].extend(text_dates)

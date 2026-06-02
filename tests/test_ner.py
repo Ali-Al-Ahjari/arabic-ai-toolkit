@@ -16,3 +16,9 @@ def test_extract_dates():
     entities = extract_entities(text)
     assert "12-10-2023" in entities["dates"]
     assert "12 أكتوبر 2023" in entities["dates"]
+
+def test_extract_eastern_and_hijri_dates():
+    text = "بدأ الفصل في 15 أيلول 2023 وانتهى في 1 رمضان 1445"
+    entities = extract_entities(text)
+    assert "15 أيلول 2023" in entities["dates"]
+    assert "1 رمضان 1445" in entities["dates"]

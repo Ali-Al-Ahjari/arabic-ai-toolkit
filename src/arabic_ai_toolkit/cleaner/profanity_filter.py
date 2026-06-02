@@ -1,5 +1,6 @@
 import re
 from arabic_ai_toolkit.tokenizer.tokenizer import split_words
+from arabic_ai_toolkit.stemmer.light_stemmer import stem
 
 # A basic conceptual list of inappropriate words (kept light for demonstration)
 _PROFANITY_LIST = {
@@ -12,7 +13,10 @@ def has_profanity(text: str) -> bool:
     """
     words = split_words(text)
     for word in words:
-        if word in _PROFANITY_LIST:
+        clean_word = re.sub(r'[^\w\s]', '', word)
+        if clean_word.startswith('يا') and len(clean_word) > 2:
+            clean_word = clean_word[2:]
+        if clean_word in _PROFANITY_LIST or stem(clean_word) in _PROFANITY_LIST:
             return True
     return False
 
@@ -26,7 +30,10 @@ def censor_text(text: str, replacer: str = "***") -> str:
     for word in words:
         # Strip punctuation to check the core word
         clean_word = re.sub(r'[^\w\s]', '', word)
-        if clean_word in _PROFANITY_LIST:
+        is_ya_prefixed = clean_word.startswith('يا') and len(clean_word) > 2
+        test_word = clean_word[2:] if is_ya_prefixed else clean_word
+        
+        if test_word in _PROFANITY_LIST or stem(test_word) in _PROFANITY_LIST:
             # Replace the word but keep length? For simplicity just use replacer.
             censored_words.append(replacer)
         else:

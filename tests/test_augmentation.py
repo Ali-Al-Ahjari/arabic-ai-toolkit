@@ -14,6 +14,15 @@ def test_augment_text():
         var_words = set(var.split())
         assert original_words != var_words
 
+def test_augment_with_prefixes():
+    text = "رأيت الرجل والجميل"
+    variations = augment_text(text, n_variations=1)
+    if variations:
+        assert "والجميل" not in variations[0]
+        # Depending on synonym, it should retain the prefix "وال"
+        # E.g. والوسيم, والرائع
+        assert any(var.startswith("رأيت الرجل وال") for var in variations)
+
 def test_augment_no_synonyms():
     text = "هذا نص عادي"
     variations = augment_text(text, n_variations=3)

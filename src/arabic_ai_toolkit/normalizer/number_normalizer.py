@@ -8,9 +8,13 @@ _EASTERN_TO_WESTERN = {
 def normalize_numbers(text: str) -> str:
     """
     Converts Eastern Arabic numerals (١٢٣) to Western numerals (123).
+    Also converts Arabic decimal separators (، or ٫) to a dot (.), but ONLY when between digits.
     """
     for eastern, western in _EASTERN_TO_WESTERN.items():
         text = text.replace(eastern, western)
+        
+    # Replace Arabic comma '،' or '٫' with dot '.' if it is strictly between two digits
+    text = re.sub(r'(?<=\d)[،٫](?=\d)', '.', text)
     return text
 
 def extract_numbers(text: str) -> list[float]:

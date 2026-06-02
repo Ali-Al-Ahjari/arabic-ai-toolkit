@@ -17,6 +17,19 @@ _SYNONYMS = {
     "صعب": ["عسير", "شاق", "معقد"]
 }
 
+_PREFIXES = sorted(['وال', 'فال', 'كال', 'بال', 'لل', 'ال', 'ب', 'ف', 'ك', 'و'], key=len, reverse=True)
+
+def _get_synonym_with_prefix(word: str) -> str | None:
+    if word in _SYNONYMS:
+        return random.choice(_SYNONYMS[word])
+        
+    for p in _PREFIXES:
+        if word.startswith(p) and len(word) > len(p) + 2:
+            base = word[len(p):]
+            if base in _SYNONYMS:
+                return p + random.choice(_SYNONYMS[base])
+    return None
+
 def augment_text(text: str, n_variations: int = 3) -> list[str]:
     """
     Augments text by replacing words with their synonyms.
@@ -33,8 +46,9 @@ def augment_text(text: str, n_variations: int = 3) -> list[str]:
         new_words = []
         changed = False
         for word in words:
-            if word in _SYNONYMS and random.random() > 0.3: # 70% chance to replace if synonym exists
-                new_words.append(random.choice(_SYNONYMS[word]))
+            synonym = _get_synonym_with_prefix(word)
+            if synonym and random.random() > 0.3: # 70% chance to replace if synonym exists
+                new_words.append(synonym)
                 changed = True
             else:
                 new_words.append(word)
