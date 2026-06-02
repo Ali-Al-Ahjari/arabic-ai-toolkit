@@ -9,3 +9,9 @@ def test_analyze_sentiment() -> None:
     
     res3 = analyze_sentiment("سيارة عادية")
     assert res3["label"] == "Neutral"
+
+def test_analyze_sentiment_negation():
+    text = "التطبيق ليس جيدا ولا ممتاز"
+    result = analyze_sentiment(text)
+    assert result["label"] == "Negative"
+    assert result["score"] < 0

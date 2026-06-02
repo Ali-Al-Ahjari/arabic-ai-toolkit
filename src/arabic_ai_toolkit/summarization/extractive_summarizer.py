@@ -1,6 +1,7 @@
 from collections import Counter
 from arabic_ai_toolkit.tokenizer.tokenizer import split_sentences, split_words
 from arabic_ai_toolkit.stopwords.stopwords import remove_stopwords
+from arabic_ai_toolkit.stemmer.light_stemmer import stem
 
 def summarize(text: str, num_sentences: int = 2) -> list[str]:
     """
@@ -11,9 +12,10 @@ def summarize(text: str, num_sentences: int = 2) -> list[str]:
         return sentences
         
     # Calculate word frequencies
+    # Calculate word frequencies using stemmed words
     all_words = split_words(text)
     all_words = remove_stopwords(all_words)
-    word_freq = Counter(all_words)
+    word_freq = Counter(stem(w) for w in all_words)
     
     if not word_freq:
         return sentences[:num_sentences]
@@ -27,7 +29,7 @@ def summarize(text: str, num_sentences: int = 2) -> list[str]:
     sentence_scores = []
     for i, sentence in enumerate(sentences):
         words = split_words(sentence)
-        score = sum(normalized_freq.get(w, 0.0) for w in words)
+        score = sum(normalized_freq.get(stem(w), 0.0) for w in words)
         sentence_scores.append((score, i, sentence))
         
     # Sort by score (descending)

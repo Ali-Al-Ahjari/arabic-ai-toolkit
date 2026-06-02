@@ -34,15 +34,10 @@ def extract_entities(text: str) -> dict[str, list[str]]:
             entities["locations"].append(clean_word if clean_word in _CITIES else word)
             
     # 2. Organizations
-    # Simple rule: If we see an org keyword, capture it and the next 1-2 words
-    for i, word in enumerate(words):
-        if word in _ORGANIZATION_KEYWORDS:
-            org_name = word
-            if i + 1 < len(words):
-                org_name += " " + words[i+1]
-            if i + 2 < len(words) and len(words[i+2]) > 2: # heuristic
-                org_name += " " + words[i+2]
-            entities["organizations"].append(org_name)
+    # Naive extraction based on keywords
+    org_pattern = r'\b(?:شركة|مؤسسة|وزارة|جامعة|مستشفى|بنك|هيئة|منظمة|وكالة|جمعية)\s+\S+(?:\s+\S+)?\b'
+    orgs = re.findall(org_pattern, text)
+    entities["organizations"].extend(orgs)
             
     # 3. Dates
     # Match dd-mm-yyyy or yyyy-mm-dd

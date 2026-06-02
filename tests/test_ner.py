@@ -7,9 +7,11 @@ def test_extract_locations():
     assert "السعودية" in entities["locations"]
 
 def test_extract_organizations():
-    text = "أعلنت شركة أبل عن أرباحها"
+    text = "أعلنت وزارة الصحة و بنك الراجحي عن أرباحها"
     entities = extract_entities(text)
-    assert any("شركة أبل" in org for org in entities["organizations"])
+    org_str = " ".join(entities["organizations"])
+    assert "وزارة الصحة" in org_str
+    assert "بنك الراجحي" in org_str
 
 def test_extract_dates():
     text = "تاريخ اليوم هو 12 أكتوبر 2023 وفي الرقم 12-10-2023"

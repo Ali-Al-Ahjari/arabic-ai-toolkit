@@ -11,6 +11,15 @@ def correct_common_errors(text: str) -> str:
     text = re.sub(r'\s+([،.؛؟!])', r'\1', text)
     
     # Very naive fix for 'ة' instead of 'ه' in pronouns like (عليه، فيه) which are often mistyped (علية، فية)
+    # Very naive fix for 'ة' instead of 'ه' in pronouns like (عليه، فيه) which are often mistyped (علية، فية)
     text = re.sub(r'\b(علي|في|إلي|الي|عن|من)ة\b', r'\1ه', text)
+    
+    # Common mistakes
+    text = re.sub(r'\bانشاء\s+الله\b', 'إن شاء الله', text)
+    text = re.sub(r'\bاللذي\b', 'الذي', text)
+    text = re.sub(r'\bاللتي\b', 'التي', text)
+    text = re.sub(r'\bهاذا\b', 'هذا', text)
+    text = re.sub(r'\bلكن\b', 'لكن', text) # just in case they wrote لاكن (wait, next line)
+    text = re.sub(r'\bلاكن\b', 'لكن', text)
     
     return text
