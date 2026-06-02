@@ -107,3 +107,7 @@ Contributions are welcome! Please ensure you pass `pytest`, `mypy`, and `ruff` b
 
 ## 📄 License
 This project is licensed under the MIT License.
+
+---
+## 🔍 Search Keywords (SEO)
+Arabic NLP, Arabic Text Processing, Arabic Stemmer, Arabic Sentiment Analysis, Arabic Stopwords, Arabic NER, Arabic Tokenization, Arabic Auto-correct, Arabic Dialect Detection, معالجة اللغات الطبيعية, معالجة اللغة العربية, الذكاء الاصطناعي العربي, تحليل المشاعر العربي, التجذير العربي, استخراج الكيانات العربية, تصحيح إملائي عربي, تلخيص النصوص العربية, مكتبة بايثون لمعالجة النصوص, Python Arabic NLP Library, Arabic Data Cleaning.

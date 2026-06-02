@@ -7,6 +7,11 @@ readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "MIT" }
 dependencies = []
+keywords = [
+    "arabic", "nlp", "ai", "text-processing", "sentiment-analysis", 
+    "stemming", "ner", "arabic-nlp", "machine-learning", "text-cleaning",
+    "معالجة اللغة العربية", "ذكاء اصطناعي", "تلخيص", "تحليل المشاعر", "استخراج الكيانات"
+]
 
 [project.scripts]
 arabic-ai-toolkit = "arabic_ai_toolkit.cli:main"
